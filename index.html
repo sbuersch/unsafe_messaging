@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockchain Chat</title>
+</head>
+<body>
+  <div id="chatBox">
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+  <script>
+    // Local blockchain to simulate storing messages
+    let blockchain = [];
+    let my_messages = [];
+
+
+    // Broadcast Channel for real-time messaging
+    const channel = new BroadcastChannel('chatChannel');
+
+    // Function to send message through broadcast channel
+    function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const message = messageInput.value.trim();
+      if (message !== '') {
+        channel.postMessage(message); // Broadcast all messages
+        messageInput.value = '';
+      }
+    }
+
+    // Listen for incoming messages on the broadcast channel
+    channel.onmessage = event => {
+      const message = event.data;
+        console.log("message: ", message)
+        alert(message)
+    };
+
+  </script>
+</body>
+</html>
